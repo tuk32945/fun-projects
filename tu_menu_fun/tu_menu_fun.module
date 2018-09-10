@@ -1,0 +1,65 @@
+<?php
+
+function tu_menu_fun_block_info(){
+    $blocks['tu_menu_fun_block'] = array(
+        'info' => t('TU Fun Menu Block'),
+    );
+    return $blocks;
+}
+
+function tu_menu_fun_block_view(){
+
+$block['content']['#attached']['js'] = array(
+            drupal_get_path('module', 'tu_menu_fun') . '/js/tu_menu_fun.js',
+        );
+        $block['content']['#attached']['js'] = array(
+            drupal_get_path('module', 'tu_menu_fun') . '/js/tu_menu_fun.js',
+        );
+$block['content']['#attached']['css'] = array(
+            drupal_get_path('module', 'tu_menu_fun') . '/css/tu_menu_fun.css',
+        
+        );    
+
+$block['subject'] = t('TU Fun Menu Block Title');
+$block['content']['#markup'] = '
+    <div class="container">
+        <H2> The Weather </H2>
+        <table style="width:100%;opacity:100;">
+            <thead>
+                <tr style="background-color:lightgray">
+                    <th>City</th>
+                    <th>Morning</th>
+                    <th>Evening</th>
+                </tr>
+            </thead>
+                <tbody>
+                    <tr>
+                        <td>London</td>
+                        <td>Foggy</td>
+                        <td>Also Foggy</td>
+                    </tr>
+                    <tr>
+                        <td>Philly</td>
+                        <td>Sunny</td>
+                        <td>Always Sunny</td>
+                    </tr>
+                    <tr>
+                        <td>Des Moines</td>
+                        <td>Cold</td>
+                        <td>Freezing</td>
+                    </tr>
+                </tbody>
+        </table> 
+    </div>  
+    ';
+
+   
+
+    
+    drupal_add_js('https://code.jquery.com/jquery-3.3.1.min.js', 'external');
+    drupal_add_js('https://code.jquery.com/ui/1.12.0/jquery-ui.min.js', 'external');
+    drupal_add_js('https://getbootstrap.com/dist/js/bootstrap.min.js', 'external');
+    drupal_add_js('http://example.com/example.js', 'external');
+	
+	return $block;
+}

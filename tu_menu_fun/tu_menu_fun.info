@@ -1,0 +1,10 @@
+name = "TU Menu Fun"
+description = "this module will display a table of static data and add CSS to the table to be used as a block "
+package = "tu custom"
+core = 7.x
+
+files[] = tu_menu_fun.info
+files[] = tu_menu_fun.module
+files[] = js/tu_menu_fun.js
+files[] = css/tu_menu_fun.css 
+files[] = block--tu-menu-fun.tpl.php
