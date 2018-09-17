@@ -1,0 +1,17 @@
+<?php
+
+/**
+ * Disable and uninstall the module.
+ */
+
+$modules = array('devel','views_ui');
+
+//dsm($modules);
+  module_disable($modules, $disable_dependents = FALSE);
+
+
+function tu_framework_mod_disable_update_7100(){
+
+}
+
+?>

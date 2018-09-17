@@ -1,0 +1,5 @@
+name = TU Framework Modules Disabler
+description = This Module will disable certain modules based on site environment that we don't want in prod or staging.
+core = 7.x
+package = TU Custom
+version = 7.x-1.0
