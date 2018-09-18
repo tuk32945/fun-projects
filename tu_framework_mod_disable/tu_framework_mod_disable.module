@@ -1,15 +1,23 @@
 <?php
 
-define("DISABLER_DOMAIN", trim(explode('.', $_SERVER['HTTP_HOST'])[0]));
+/**
+ * Disable and uninstall the modules listed in the $modules array.
+ */
+
+define("SUB_DOMAIN", trim(explode('.', $_SERVER['HTTP_HOST'])[0]));
 
 //dsm('AH_SITE_ENVIRONMENT');
 
+
+
 function tu_framework_mod_disable_cron() {
   //if (isset($_SERVER['HTTP_HOST'])) {}
+  if (!defined('AH_SITE_ENVIRONMENT')){
+    define('AH_SITE_ENVIRONMENT', SUB_DOMAIN); //this line is for testing purposes outside of acquia environments where AH_SITE_ENVIRONMENT may not be defined already
+  }
+  if (defined('AH_SITE_ENVIRONMENT')) {
 
-  if (defined('DISABLER_DOMAIN')) {
-
-    if (DISABLER_DOMAIN !== 'dev') {
+    if (AH_SITE_ENVIRONMENT !== 'dev') {
 
       $modules = array(
       'bean_admin_ui',
@@ -23,7 +31,7 @@ function tu_framework_mod_disable_cron() {
       'views_ui'
       );
 
-      module_disable($modules, $disable_dependents = FALSE);
+      module_disable($modules, FALSE);
     }
   }
 }
