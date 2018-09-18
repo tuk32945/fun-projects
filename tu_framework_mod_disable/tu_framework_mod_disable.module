@@ -1,1 +1,9 @@
 <?php
+
+
+
+
+function tu_framework_mod_disable_cron() {
+    $modules = array('devel','views_ui');
+      module_disable($modules, $disable_dependents = FALSE);
+}

@@ -4,14 +4,13 @@
  * Disable and uninstall the modules listed in the $modules array.
  */
 
-$modules = array('devel','views_ui');
+
 
 //dsm($modules);
-module_disable($modules, $disable_dependents = FALSE);
+
+  //function tu_framework_mod_disable_update_7100(){}
 
 
-function tu_framework_mod_disable_update_7100(){
 
-}
 
 ?>
