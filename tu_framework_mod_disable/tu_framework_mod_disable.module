@@ -1,7 +1,8 @@
 <?php
 
-
-
+/**
+ * Disable and uninstall the modules listed in the $modules array.
+ */
 
 function tu_framework_mod_disable_cron() {
     $modules = array('devel','views_ui');

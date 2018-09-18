@@ -1,16 +1,5 @@
 <?php
 
-/**
- * Disable and uninstall the modules listed in the $modules array.
- */
-
-
-
 //dsm($modules);
-
-  //function tu_framework_mod_disable_update_7100(){}
-
-
-
 
 ?>
