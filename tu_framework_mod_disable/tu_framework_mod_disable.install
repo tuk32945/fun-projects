@@ -1,5 +1,15 @@
 <?php
 
-//dsm($modules);
 
+
+  // MODULES_READABLE_NAME has been moved the .inc file
+
+require_once(dirname(DRUPAL_ROOT) . DIRECTORY_SEPARATOR . 'edutier3/sites/all/modules/tu_framework_mod_disable/tu_framework_mod_disable.values.inc');
+
+function tu_framework_mod_disable_disable(){
+  global $modules_readable_name;
+  
+  module_enable(array_keys($modules_readable_name), FALSE);
+
+}
 ?>
