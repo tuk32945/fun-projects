@@ -10,9 +10,47 @@ define("SUB_DOMAIN", trim(explode('.', $_SERVER['HTTP_HOST'])[0]));
 
 
 
-
 function tu_framework_mod_disable_cron() {
+
+
   //if (isset($_SERVER['HTTP_HOST'])) {}
+  global $modules_readable_name;
+
+  $toggle_default = variable_get('tu_framework_mod_disable_toggle_each', array());
+  $modules_to_enable = $modules_to_disable = array();
+
+    if (empty($toggle_default)) {
+
+      $modules_to_disable = $modules_readable_name;
+
+
+
+    } else {
+      foreach ($toggle_default as $key => $value){
+        if (!$toggle_default[$key] == 0) {
+          $modules_to_disable[$key] = $toggle_default[$key];
+          //print_r($toggle_default[$value]);die;
+          module_disable(array_values($modules_to_disable), FALSE);
+
+        } else {
+          if ($toggle_default[$key] == 0) {
+            $modules_to_enable[$key] = $toggle_default[$key];
+            //print_r($toggle_default[$value]);die;
+            module_enable(array_keys($modules_to_enable), FALSE);
+          }
+
+
+          }
+      }
+    }
+    //$modules_to_disable = array_keys($form_state['input']['tu_framework_mod_disable_toggle_each']);
+
+    // loop through stored values
+    // check value and add mdoule's machine name
+    // to the appropriate array
+
+
+/*
   if (!defined('AH_SITE_ENVIRONMENT')){
     define('AH_SITE_ENVIRONMENT', SUB_DOMAIN); //this line is for testing purposes outside of acquia environments where AH_SITE_ENVIRONMENT may not be defined already
   }
@@ -20,27 +58,13 @@ function tu_framework_mod_disable_cron() {
   if (defined('AH_SITE_ENVIRONMENT')) {
 
     if (AH_SITE_ENVIRONMENT !== 'dev') {
-
-      $modules = array(
-      //'bean_admin_ui', <-- disabled bean_admin_ui and context_ui because of the dependency issues, only while testing once done this should be uncommented
-      //'context_ui',
-      'devel',
-      'feeds_ui',
-      'feeds_tamper_ui',
-      'field_ui',
-      'http_response_headers_ui',
-      'rules_admin',
-      'views_ui'
-      );
-
-      module_disable($modules, FALSE);
-      /*
-      this can be commented out until we decide on the dependency issue otherwise we will get popups for bean and context_ui
-      module_disable(array_keys($modules_readable_name), FALSE);
-      */
+      module_disable(array_keys($modules_to_disable), FALSE);
     }
+
   }
+*/
 }
+
 
 function tu_framework_mod_disable_permission(){
   return array(
@@ -72,6 +96,8 @@ function tu_framework_mod_disable_settings($form, &$form_state){
 
   global $modules_readable_name;
 
+  $toggle_default = variable_get('tu_framework_mod_disable_toggle_each', array());
+// print_r($toggle_default); die;
   $form['tu_framework_mod_disable_wrapper'] = array(
     '#type' => 'fieldset',
     '#title' => t('Disable All Modules Below'),
@@ -94,23 +120,28 @@ function tu_framework_mod_disable_settings($form, &$form_state){
     '#title' =>  '',
     '#description' => 'The Selected Modules Will Be Disabled',
     '#options' => $modules_readable_name,
-
-
+    '#default_value' => $toggle_default,
   );
 
-  $form['buttons']['submit'] = array(
-    '#type' => 'submit',
-    '#value' => t('Submit'),
-  );
-tu_framework_mod_disable_form_submit('tu_framework_mod_disable_wrapper', $form_state);
- return $form;
+  // $form['buttons']['submit'] = array(
+  //   '#type' => 'submit',
+  //   '#value' => t('Submit'),
+  // );
+
+  // if($form_state['input']['tu_framework_mod_disable_toggle_each']){
+  //   tu_framework_mod_disable_form_submit('tu_framework_mod_disable_settings', $form_state);
+  // }
+ return system_settings_form($form);
+
 }
 
 function tu_framework_mod_disable_validate(&$form, &$form_state){
-
+//  module_disable(array_keys($form_state['input']['tu_framework_mod_disable_toggle_each']), FALSE);
 }
 
 function tu_framework_mod_disable_form_submit($form_id, &$form_state){
-  drupal_set_message('Thanks For Your Information');
-print_r($form_state['tu_framework_mod_disable_each_wrapper']['tu_framework_mod_disable_toggle_each']);
+
+  drupal_set_message('Selected Modules Now Disabled');
+   dsm($form_state['input']['tu_framework_mod_disable_toggle_each']);
+
 }
