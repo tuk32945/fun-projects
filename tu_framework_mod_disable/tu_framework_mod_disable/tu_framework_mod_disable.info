@@ -1,0 +1,9 @@
+name = TU Framework Modules Disabler
+description = This module will (on the next cron run) disable certain modules based on site environment that we don't want in prod or staging.
+core = 7.x
+package = TU Custom
+version = 7.x-1.0
+
+files[] = tu_framework_mod_disable.values.inc
+files[] = tu_framework_mod_disable.module
+files[] = tu_framework_mod_disable.install

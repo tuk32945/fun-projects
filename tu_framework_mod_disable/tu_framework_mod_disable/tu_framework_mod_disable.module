@@ -1,0 +1,147 @@
+<?php
+require_once(dirname(DRUPAL_ROOT) . DIRECTORY_SEPARATOR . 'edutier3/sites/all/modules/tu_framework_mod_disable/tu_framework_mod_disable.values.inc');
+/**
+ * Disable and uninstall the modules listed in the $modules array.
+ */
+
+define("SUB_DOMAIN", trim(explode('.', $_SERVER['HTTP_HOST'])[0]));
+
+//dsm(AH_SITE_ENVIRONMENT);
+
+
+
+function tu_framework_mod_disable_cron() {
+
+
+  //if (isset($_SERVER['HTTP_HOST'])) {}
+  global $modules_readable_name;
+
+  $toggle_default = variable_get('tu_framework_mod_disable_toggle_each', array());
+  $modules_to_enable = $modules_to_disable = array();
+
+    if (empty($toggle_default)) {
+
+      $modules_to_disable = $modules_readable_name;
+
+
+
+    } else {
+      foreach ($toggle_default as $key => $value){
+        if (!$toggle_default[$key] == 0) {
+          $modules_to_disable[$key] = $toggle_default[$key];
+          //print_r($toggle_default[$value]);die;
+          module_disable(array_values($modules_to_disable), FALSE);
+
+        } else {
+          if ($toggle_default[$key] == 0) {
+            $modules_to_enable[$key] = $toggle_default[$key];
+            //print_r($toggle_default[$value]);die;
+            module_enable(array_keys($modules_to_enable), FALSE);
+          }
+
+
+          }
+      }
+    }
+    //$modules_to_disable = array_keys($form_state['input']['tu_framework_mod_disable_toggle_each']);
+
+    // loop through stored values
+    // check value and add mdoule's machine name
+    // to the appropriate array
+
+
+/*
+  if (!defined('AH_SITE_ENVIRONMENT')){
+    define('AH_SITE_ENVIRONMENT', SUB_DOMAIN); //this line is for testing purposes outside of acquia environments where AH_SITE_ENVIRONMENT may not be defined already
+  }
+
+  if (defined('AH_SITE_ENVIRONMENT')) {
+
+    if (AH_SITE_ENVIRONMENT !== 'dev') {
+      module_disable(array_keys($modules_to_disable), FALSE);
+    }
+
+  }
+*/
+}
+
+
+function tu_framework_mod_disable_permission(){
+  return array(
+  'administer tu_framework_mod_disable' => array(
+    'title' => t('<em>TU Admin UI Disable</em> Access TU Framework Mod Disabler Configuration'),
+    'description' =>  t('Administer Config for TU Mod Disabler'),
+  ),
+);
+}
+
+function tu_framework_mod_disable_menu() {
+
+  $items = array();
+
+  $items['admin/config/tu-config/tu-framework-mod-disable'] = array(
+    'title' => 'TU Framework Module Disabler',
+    'description' => 'Settings page related to Module Disabler.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('tu_framework_mod_disable_settings'),
+    'access arguments' => array('administer tu_framework_mod_disable'),
+    'weight' => 0,
+    'type' => MENU_NORMAL_ITEM,
+  );
+
+  return $items;
+}
+
+function tu_framework_mod_disable_settings($form, &$form_state){
+
+  global $modules_readable_name;
+
+  $toggle_default = variable_get('tu_framework_mod_disable_toggle_each', array());
+// print_r($toggle_default); die;
+  $form['tu_framework_mod_disable_wrapper'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Disable All Modules Below'),
+  );
+
+  $form['tu_framework_mod_disable_each_wrapper'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Individually Choose the Modules You Want To Disable'),
+  );
+
+
+  $form['tu_framework_mod_disable_wrapper']['tu_framework_mod_disable_toggle'] = array(
+    '#type' => 'checkbox',
+    '#title' => 'Toggle Cron Activation',
+    '#description' => '(Disable All of the following Modules on Next Cron Run)',
+  );
+
+  $form['tu_framework_mod_disable_each_wrapper']['tu_framework_mod_disable_toggle_each'] = array(
+    '#type' => 'checkboxes',
+    '#title' =>  '',
+    '#description' => 'The Selected Modules Will Be Disabled',
+    '#options' => $modules_readable_name,
+    '#default_value' => $toggle_default,
+  );
+
+  // $form['buttons']['submit'] = array(
+  //   '#type' => 'submit',
+  //   '#value' => t('Submit'),
+  // );
+
+  // if($form_state['input']['tu_framework_mod_disable_toggle_each']){
+  //   tu_framework_mod_disable_form_submit('tu_framework_mod_disable_settings', $form_state);
+  // }
+ return system_settings_form($form);
+
+}
+
+function tu_framework_mod_disable_validate(&$form, &$form_state){
+//  module_disable(array_keys($form_state['input']['tu_framework_mod_disable_toggle_each']), FALSE);
+}
+
+function tu_framework_mod_disable_form_submit($form_id, &$form_state){
+
+  drupal_set_message('Selected Modules Now Disabled');
+   dsm($form_state['input']['tu_framework_mod_disable_toggle_each']);
+
+}
