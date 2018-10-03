@@ -7,3 +7,4 @@ version = 7.x-1.0
 files[] = tu_framework_mod_disable.values.inc
 files[] = tu_framework_mod_disable.module
 files[] = tu_framework_mod_disable.install
+files[] = tu_framework_mod_disable.drush.inc
