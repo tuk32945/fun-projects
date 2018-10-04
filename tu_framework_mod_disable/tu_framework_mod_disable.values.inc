@@ -13,3 +13,4 @@ $GLOBALS['modules_readable_name'] = array(
 );
 
 //define ldr as global with initial definition
+$GLOBALS['toggle_default'] = array();

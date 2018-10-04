@@ -17,7 +17,7 @@ define("SUB_DOMAIN", trim(explode('.', $_SERVER['HTTP_HOST'])[0]));
 
 function toggle_options(){
   global $modules_readable_name;
-  $toggle_default = variable_get('tu_framework_mod_disable_toggle_each', array());
+  global $toggle_default;
 
   if (empty($toggle_default)) {
 
@@ -42,17 +42,19 @@ function toggle_options(){
           }
         /** debug */
 
-       print('below this is $modules_to_disable');
-        ?><br><?php
+        print('below this is $modules_to_disable');
+         ?><br><?php
         print_r($modules_to_disable);
          ?><br><?php
-         print('below this is $toggle_default');
+        print('below this is $toggle_default');
           ?><br><?php
         print_r($toggle_default);
-        ?><br><?php  //debug
+         ?><br><?php  //debug
         print('below this is $modules_to_enable');
          ?><br><?php
-         print_r($modules_to_enable);
+         if(!empty($modules_to_enable)){
+           print_r($modules_to_enable);
+         }
 
         variable_set('tu_framework_mod_disable_toggle_each', $toggle_default);
 }
@@ -106,15 +108,16 @@ function daily_cron_disable(){
 
 
 function tu_framework_mod_disable_cron() {
-  if (variable_get('disable_execute', FALSE) == TRUE ){
+  if (variable_get('disable_execute') == TRUE ){
     toggle_options();
     variable_set('disable_execute', FALSE);
-
+    ?><br><?php
+    print('disable_execute is true');
+    print(variable_get('disable_execute'));
   } else {
     daily_cron_disable();
+    }
   }
-
-}
 
 function tu_framework_mod_disable_permission(){
   return array(
@@ -198,17 +201,65 @@ function tu_framework_mod_disable_settings($form, &$form_state){
 }
 
 function tu_framework_mod_disable_validate($element, $form_state){
-/*global $modules_readable_name;
-$modules_included = $modules_readable_name;
 
-  if (!in_array($form_state['values']['tu_framework_mod_disable_toggle_each'], $modules_included)){
-    form_error($element, t('You must select a valid module'));
+    global $modules_readable_name;
+    global $toggle_default;
+    $modules_included = $form_state['values']['tu_framework_mod_disable_toggle_each'];
+    $loaded_list = variable_get('tu_framework_mod_disable_toggle_each');
+    $no_change = FALSE;
+    $form_state['values']['tu_framework_mod_disable_toggle_each'];
+    $toggle_default = $form_state['values']['tu_framework_mod_disable_toggle_each'];
+    $changes = array_diff($loaded_list, $modules_included);
+
+    /*
+    ?><br><?php
+    print_r($modules_included);
+    ?><br><?php
+    print_r($loaded_list);
+    ?><br><?php
+    print_r($changes); die;
+    */
+
+    if(empty($changes)){
+      drupal_set_message('No change submitted');
+    }
+
+   /*
+   foreach($modules_readable_name as $key => $value){
+    if ($loaded_list == $modules_included){
+      $no_change = TRUE;
+      //print_r($no_change); die;
+    }
   }
-  if ($form_state['values']['tu_framework_mod_disable_toggle_each'] == $toggle_default){
-    form_error($element, t('no change submitted'));
-  }
-*/
-//  module_disable(array_keys($form_state['input']['tu_framework_mod_disable_toggle_each']), FALSE);
+    if($no_change == TRUE){
+      drupal_set_message('No change submitted');
+      $no_change = FALSE;
+      //print_r($no_change); die;
+    }
+    */
+
+    /*
+
+    /*
+    if (!in_array($form_state['values']['tu_framework_mod_disable_toggle_each'], array_keys($toggle_default))){
+      form_error($element, t('You must select a valid module'));
+    }
+
+    if ($form_state['values']['tu_framework_mod_disable_toggle_each'] == $toggle_default){
+      form_error($element, t('no change submitted'));
+    }
+    */
+    /*global $modules_readable_name;
+    $modules_included = $modules_readable_name;
+
+      if (!in_array($form_state['values']['tu_framework_mod_disable_toggle_each'], array($modules_included))){
+        form_error($element, t('You must select a valid module'));
+      }
+      if ($form_state['values']['tu_framework_mod_disable_toggle_each'] == $toggle_default){
+        form_error($element, t('no change submitted'));
+      }
+    */
+    //  module_disable(array_keys($form_state['input']['tu_framework_mod_disable_toggle_each']), FALSE);
 tu_framework_mod_disable_form_submit('tu_framework_mod_disable_toggle_each', $form_state);
 }
 
