@@ -40,7 +40,7 @@ function toggle_options(){
                 }
             }
           }
-        /** debug */
+        /* debug
 
         print('below this is $modules_to_disable');
          ?><br><?php
@@ -53,11 +53,13 @@ function toggle_options(){
         print('below this is $modules_to_enable');
          ?><br><?php
          if(!empty($modules_to_enable)){
-           print_r($modules_to_enable);
+           print_r($modules_to_enable); die;
          }
 
         variable_set('tu_framework_mod_disable_toggle_each', $toggle_default);
+        */
 }
+
 
 function daily_cron_disable(){
   $current_time = time();
@@ -204,10 +206,9 @@ function tu_framework_mod_disable_validate($element, $form_state){
 
     global $modules_readable_name;
     global $toggle_default;
+
     $modules_included = $form_state['values']['tu_framework_mod_disable_toggle_each'];
     $loaded_list = variable_get('tu_framework_mod_disable_toggle_each');
-    $no_change = FALSE;
-    $form_state['values']['tu_framework_mod_disable_toggle_each'];
     $toggle_default = $form_state['values']['tu_framework_mod_disable_toggle_each'];
     $changes = array_diff($loaded_list, $modules_included);
 
@@ -223,20 +224,7 @@ function tu_framework_mod_disable_validate($element, $form_state){
     if(empty($changes)){
       drupal_set_message('No change submitted');
     }
-
-   /*
-   foreach($modules_readable_name as $key => $value){
-    if ($loaded_list == $modules_included){
-      $no_change = TRUE;
-      //print_r($no_change); die;
-    }
-  }
-    if($no_change == TRUE){
-      drupal_set_message('No change submitted');
-      $no_change = FALSE;
-      //print_r($no_change); die;
-    }
-    */
+    //????? could add drupal_cron_run here behind an else statement
 
     /*
 
@@ -266,7 +254,5 @@ tu_framework_mod_disable_form_submit('tu_framework_mod_disable_toggle_each', $fo
 function tu_framework_mod_disable_form_submit($form_id, &$form_state){
  variable_set('disable_execute', TRUE);
  drupal_cron_run();
-  /* drupal_set_message('Selected Modules Now Disabled');
-   dsm($form_state['input']['tu_framework_mod_disable_toggle_each']);
-   */
+
 }
