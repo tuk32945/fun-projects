@@ -1,0 +1,33 @@
+<?php
+
+
+function cron_toggle(){  //<-- GETS CALLED in form_submit
+  if (variable_get('disable_execute' == TRUE)){
+    toggle_options();
+    variable_set('disable_execute', FALSE);
+  } else {
+    drupal_cron_run();
+  }
+}
+
+
+hook_cron(){
+  daily_cron_disable();
+}
+
+function form_submit(){
+  if (!defined('AH_SITE_ENVIRONMENT')){
+    define('AH_SITE_ENVIRONMENT', SUB_DOMAIN); //this line is for testing purposes outside of acquia environments where AH_SITE_ENVIRONMENT may not be defined already
+  }
+
+  if (defined('AH_SITE_ENVIRONMENT')) {
+
+    if (AH_SITE_ENVIRONMENT !== 'dev') {
+      drupal_cron_run();
+      OR
+      cron_toggle();
+    }
+
+  }
+
+  }

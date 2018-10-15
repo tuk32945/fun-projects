@@ -67,10 +67,11 @@ function daily_cron_disable(){
   $last_run = 'less than 48 hours';
   $time_limit = 172800000;
   $time_diff = ($current_time - $last_disable_run);
+  variable_set('tu_framework_mod_disable_time_diff', $time_diff);
   //$last_run = variable_get('cron_last', array());
 
 
-  if($time_diff > $time_limit){
+  if($time_diff > $time_limit){ //this should be less than or the logic may need to be changed
 
     //print(date('m-d-Y',$last_disable_run)); die;
 
@@ -113,9 +114,13 @@ function tu_framework_mod_disable_cron() {
   if (variable_get('disable_execute') == TRUE ){
     toggle_options();
     variable_set('disable_execute', FALSE);
+
+    /*
     ?><br><?php
     print('disable_execute is true');
     print(variable_get('disable_execute'));
+    */
+
   } else {
     daily_cron_disable();
     }
@@ -136,7 +141,7 @@ function tu_framework_mod_disable_menu() {
 
   $items['admin/config/tu-config/tu-framework-mod-disable'] = array(
     'title' => 'TU Framework Module Disabler',
-    'description' => 'Settings page related to Module Disabler.',
+    'description' => 'Configure Which Admin UI Modules Are Enabled In Drupal Instance.',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('tu_framework_mod_disable_settings'),
     'access arguments' => array('administer tu_framework_mod_disable'),
@@ -157,7 +162,7 @@ function tu_framework_mod_disable_settings($form, &$form_state){
         as a one off forcing $toggle_default
         to view our .inc array vs affecting
         $modules_to_disable
-        */
+
     if ($toggle_all == 1){
       $toggle_default = array_keys($modules_readable_name);
     }
@@ -173,16 +178,17 @@ function tu_framework_mod_disable_settings($form, &$form_state){
     '#description' => 'De-Select Disable All Option to Allow Modules to be Enabled Below',
     '#default_value' => $toggle_all, //load or don't load?
   );
+  */
 
   $form['tu_framework_mod_disable_each_wrapper'] = array(
     '#type' => 'fieldset',
-    '#title' => t('Choose Modules to Disable on the Next Cron Run'),
+    '#title' => t('Select Modules to be Disabled on the Next Cron Run'),
   );
 
   $form['tu_framework_mod_disable_each_wrapper']['tu_framework_mod_disable_toggle_each'] = array(
     '#type' => 'checkboxes',
     '#title' =>  '',
-    '#description' => 'You Must De-Select Disable All Option to Allow Modules to be Enabled',
+    '#description' => 'Any Modules De-Selected will be Enabled Immediately',
     '#options' => $modules_readable_name,
     '#default_value' => $toggle_default,
     '#element_validate' => array('tu_framework_mod_disable_validate'),
