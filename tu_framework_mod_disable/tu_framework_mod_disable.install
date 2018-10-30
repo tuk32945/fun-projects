@@ -15,4 +15,13 @@ function tu_framework_mod_disable_disable(){
   module_enable(array_keys($modules_readable_name), FALSE);
 
 }
+
+/**
+ * Implements hook_install().
+ */
+function tu_framework_mod_disable_install() {
+
+
+
+}
 ?>
