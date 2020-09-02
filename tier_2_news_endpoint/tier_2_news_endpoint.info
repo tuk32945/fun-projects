@@ -1,0 +1,13 @@
+name = Tier 2 News Endpoint
+description = This Feature Creates A Views Endpoint And Image Style That Is Consumable by the Tier3/Framework Codebase (tu_news_importer)
+core = 7.x
+package = Features
+version = 7.x-1.0
+dependencies[] = image
+dependencies[] = views
+dependencies[] = views_data_export
+features[ctools][] = views:views_default:3.0
+features[features_api][] = api:2
+features[image][] = full_tier2_export
+features[views_view][] = news_tier3_export
+features_exclude[dependencies][ctools] = ctools

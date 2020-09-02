@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the TU Spotlight feature.
+ */
+
+include_once 'tu_feature_spotlight.features.inc';

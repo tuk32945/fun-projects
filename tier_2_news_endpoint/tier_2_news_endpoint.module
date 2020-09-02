@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Tier 2 News Endpoint feature.
+ */
+
+include_once 'tier_2_news_endpoint.features.inc';
